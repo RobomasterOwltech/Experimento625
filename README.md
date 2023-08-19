@@ -6,15 +6,15 @@ This repo constains the necesary code for core functions in the embedded system 
 
 ## TODO:
 ### Tasks:
--[ ] PWM freq control 
--[ ] Encoder 
--[ ] I2C comm 9 axis IMU
--[ ] Ultrasonic sensor digital
--[ ] Inverse kinematics system
--[ ] LCD Display
+- [ ] PWM freq control 
+- [ ] Encoder 
+- [ ] I2C comm 9 axis IMU
+- [ ] Ultrasonic sensor digital
+- [ ] Inverse kinematics system
+- [ ] LCD Display
 
 ### Classes:
--[ ] Motor control
--[ ] Ultrasonic sensor
--[ ] Chassis movement
--[ ] Servo claw 
+- [ ] Motor control
+- [ ] Ultrasonic sensor
+- [ ] Chassis movement
+- [ ] Servo claw 
