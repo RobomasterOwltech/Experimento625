@@ -20,16 +20,25 @@ This repo constains the necesary code for core functions in the embedded system 
 -----------------------------------------------
 ## TODO:
 ### Tasks:
-- [ ] PWM freq control 
-- [ ] Encoder 
+- [ ] Movement interpreter 
+  - [ ] Joystick reading
+  - [ ] Simple kinematics system
 - [ ] I2C comm 9 axis IMU
 - [ ] Ultrasonic sensor digital
 - [ ] Inverse kinematics system
+- [ ] IMU Signal Processing
+- [ ] Password check
 
 ### Classes:
+- [ ] Encoder
 - [ ] Motor control
-- [ ] Ultrasonic sensor
 - [ ] Chassis movement
+- [ ] Ultrasonic sensor
+- [ ] IMU Sensor
+- [ ] Servo
+
+### Design:
+- [ ] Revisar condicion camb en diagrama de estados
 
 
 ## Block diagram:
