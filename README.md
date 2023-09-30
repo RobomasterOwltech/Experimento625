@@ -39,6 +39,9 @@ This repo constains the necesary code for core functions in the embedded system 
 
 ### Design:
 - [ ] Revisar condicion camb en diagrama de estados
+- [ ] Pasar de los diagramas de inspiración a los reales
+- [ ] En el class diagram del motor, cambiar el método para tener un channel variable  //__HAL_TIM_SET_COMPARE(htimPWM, TIM_CHANNEL_1, control);
+
 
 
 ## Block diagram:
