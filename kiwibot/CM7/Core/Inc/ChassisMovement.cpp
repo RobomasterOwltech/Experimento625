@@ -19,3 +19,10 @@ ChassisMovement::~ChassisMovement() {
 }
 
 } /* namespace LL_Chassis */
+
+void ChassisMovement::initialize(){}
+void ChassisMovement::setMap(){};
+void ChassisMovement::moveMotor(motor _motorId){};
+int ChassisMovement::getTorque(){};
+
+
