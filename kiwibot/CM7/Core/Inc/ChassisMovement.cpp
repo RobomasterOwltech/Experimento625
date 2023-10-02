@@ -7,7 +7,7 @@
 
 #include <ChassisMovement.h>
 
-namespace LL_Control {
+namespace LL_Chassis {
 
 ChassisMovement::ChassisMovement() {
 	// TODO Auto-generated constructor stub
@@ -18,4 +18,4 @@ ChassisMovement::~ChassisMovement() {
 	// TODO Auto-generated destructor stub
 }
 
-} /* namespace LL_Control */
+} /* namespace LL_Chassis */

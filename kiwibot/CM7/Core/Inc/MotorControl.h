@@ -2,7 +2,7 @@
  * MotorControl.h
  *
  *  Created on: Oct 2, 2023
- *      Author: serfa
+ *      Author:
  */
 
 #ifndef INC_MOTORCONTROL_H_

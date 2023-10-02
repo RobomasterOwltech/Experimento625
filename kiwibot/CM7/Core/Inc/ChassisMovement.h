@@ -8,7 +8,7 @@
 #ifndef INC_CHASSISMOVEMENT_H_
 #define INC_CHASSISMOVEMENT_H_
 
-namespace LL_Control {
+namespace LL_Chassis {
 
 class ChassisMovement {
 public:
@@ -16,6 +16,6 @@ public:
 	virtual ~ChassisMovement();
 };
 
-} /* namespace LL_Control */
+} /* namespace LL_Chassis */
 
 #endif /* INC_CHASSISMOVEMENT_H_ */
