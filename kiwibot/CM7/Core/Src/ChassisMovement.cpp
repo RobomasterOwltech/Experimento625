@@ -17,12 +17,14 @@ ChassisMovement::ChassisMovement() {
 ChassisMovement::~ChassisMovement() {
 	// TODO Auto-generated destructor stub
 }
-
-} /* namespace LL_Chassis */
-
 void ChassisMovement::initialize(){}
 void ChassisMovement::setMap(){};
-void ChassisMovement::moveMotor(motor _motorId){};
-int ChassisMovement::getTorque(){};
+void ChassisMovement::moveMotor(int _motorId){};
+int ChassisMovement::getTorque(){
+	return encRevolutions * 3;
+};
+} /* namespace LL_Chassis */
+
+
 
 
