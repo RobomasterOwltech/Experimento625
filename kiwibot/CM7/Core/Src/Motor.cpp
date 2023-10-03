@@ -5,53 +5,52 @@
  *      Author: sofia
  */
 
-#include <motor.h>
+#include <Motor.h>
 
 namespace LL_Control {
 
-motor::motor() {
+Motor::Motor() {
 	// TODO Auto-generated constructor stub
 
 }
 
-motor::~motor() {
+Motor::~Motor() {
 	// TODO Auto-generated destructor stub
 }
 
-motor::motor(int _pwm, int _freq, int max_f, int min_f, bool _sentido, TIM_HandleTypeDef * htim,int _chanel, float _speed, float max_s, float min_s){
+Motor::Motor(int _pwm, int _freq, int _maxF, int minF, bool _direction, TIM_HandleTypeDef * htim,int _channel, float _speed, float _maxS, float _minS){
 	htimPWM = htim;
 	pwm=_pwm;
 	freq=_freq;
-	max_freq=max_f;
-	min_freq=min_f;
-	sentido=_sentido;
+	maxFreq=_maxf;
+	minFreq=_minF;
+	direction=_direction;
 	chanel=_chanel;
 	speed=_speed;
-	speed_max=max_s;
-	speed_min=min_s;
+	speedMax=_maxS;
+	speedMin=_minS;
 }
 
-void motor::setSpeed(float _speed){
+void Motor::setSpeed(float _speed){
     speed=_speed;
 }
 
-void motor::setPwm(float _pwm){
+void Motor::setPwm(float _pwm){
     pwm=_pwm;
 }
 
-void motor::setSentido(bool _sentido){
-    sentido=_sentido;
+void Motor::setSentido(bool _direction){
+    direction=_direction;
 }
 
-void set_freq(){
-	int mid =(motor.max_freq - motor.min_freq)/2;
-	if (motor.sentido){
-		motor.freq = mid + motor.PWM;
+void Motor::setFreq(){
+	int mid =(motor.maxFreq - motor.minFreq)/2;
+	if (motor.direction){
+		motor.freq = mid + motor.pwm;
 	}
-	else
-	motor.freq = mid -motor.PWM;
+	else{
+	motor.freq = mid -motor.pwm;
+	}
 }
-
-
 
 } /* namespace LL_Control */

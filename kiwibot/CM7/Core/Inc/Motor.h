@@ -12,27 +12,29 @@
 
 namespace LL_Control {
 
-class motor {
+class Motor {
 	private:
+	/*Pointer allows the motor class to access the associated timer to control the PWM
+	signal used to control the motor.*/
 		TIM_HandleTypeDef * htimPWM;
 		int pwm;
 		int freq;
-		int max_freq;
-		int min_freq;
-		bool sentido;
-		int chanel;
+		int maxFreq;
+		int minFreq;
+		bool direction; //indicates whether the motor rotates forward or reverse
+		int channel;
 		float speed;
-		float speed_max;
-		float speed_min;
+		float speedMax;
+		float speedMin;
 
 	public:
-		motor();
-		motor(int, int, int, int, bool, TIM_HandleTypeDef * htim, int, float, float, float);
+		Motor();
+		Motor(int, int, int, int, bool, TIM_HandleTypeDef * htim, int, float, float, float);
 		void setSpeed(float);
 		void setSentido(bool);
 		void setFreq();
-		void setPwm(int p){pwm=p;}
-		virtual ~motor();
+		void setPwm(int);
+		virtual ~Motor();
 
 };
 } /* namespace LL_Control */
