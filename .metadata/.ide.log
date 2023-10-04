@@ -1,0 +1,10 @@
+2023-10-03 13:50:09,711 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 
+2023-10-03 13:50:38,362 [INFO] Activator:176 - 
+
+
+2023-10-03 13:50:38,365 [INFO] Activator:177 - !SESSION log4j initialized
+2023-10-03 13:50:39,132 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] [Fatal Error] :8:2: El contenido de los elementos debe constar de marcadores o datos de car?cter con un formato correcto.
+2023-10-03 13:50:39,133 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 
+2023-10-03 13:50:42,188 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] [Fatal Error] :8:2: El contenido de los elementos debe constar de marcadores o datos de car?cter con un formato correcto.
+2023-10-03 13:50:42,189 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 
+2023-10-03 13:50:45,194 [INFO] LogOutputStream:77 - [STDOUT_REDIRECT] 
