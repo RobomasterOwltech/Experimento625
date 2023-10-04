@@ -46,3 +46,18 @@ This repo constains the necesary code for core functions in the embedded system 
 
 ## Block diagram:
 ![Diagrama de bloques](./doc/imgs/KiwiBlockDiagram.png)
+
+## Control diagram:
+![Diagrama de control](./doc/imgs/ControlDiagram.png)
+
+## Movement Flow diagram:
+![Diagrama de flujo del movimiento](./doc/imgs/MovementFlowDiagram.png)
+
+## State diagram:
+![Diagrama de estados](./doc/imgs/StateDiagram.png)
+
+## Task priority:
+![Prioridad de tareas](./doc/imgs/TaskPriority.png)
+
+## Task relation:
+![relacion entre clases](./doc/imgs/TaskRelation.png)
