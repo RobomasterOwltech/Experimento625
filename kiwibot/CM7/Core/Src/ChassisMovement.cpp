@@ -19,7 +19,17 @@ ChassisMovement::~ChassisMovement() {
 }
 void ChassisMovement::initialize(){}
 void ChassisMovement::setMap(){
-	
+	// TODO:
+	/*
+ 		* Pasarlo a su archivo para puro joystick
+   		* Constructor, qué necesito para crear el adc
+     			* Ponerlo como parámetro
+		* Pasar el Start y stop a sus correspondientes métodos /cons/destrcuctor
+  		* Testear lecturas e imprimir
+    		* Mapeo de puntos de lecutra a -1, 1 (normalizar lectura)
+      		* Implementar queues de comunicacioń
+     
+ 	*/
 	
 
 	HAL_ADC_Start(&hadc1);
