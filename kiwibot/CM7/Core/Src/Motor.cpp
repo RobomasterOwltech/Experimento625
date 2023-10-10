@@ -5,7 +5,7 @@
  *      Author: sofia
  */
 
-#include <Motor.h>
+#include <Motor.hpp>
 
 namespace LL_Control {
 

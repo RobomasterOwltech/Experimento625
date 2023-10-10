@@ -5,7 +5,7 @@
  *      Author:
  */
 
-#include <motor.h>
+#include <Motor.hpp>
 
 #ifndef INC_CHASSISMOVEMENT_H_
 #define INC_CHASSISMOVEMENT_H_
@@ -16,9 +16,9 @@ class ChassisMovement {
 private:
 	int posX;
 	int posY;
-	motor motor1Id;
-	motor motor2Id;
-	motor motor3Id;
+	int motor1Id;
+	int motor2Id;
+	int motor3Id;
 	bool direction;
 	int encRevolutions;
 public:
@@ -26,7 +26,7 @@ public:
 	virtual ~ChassisMovement();
 	void initialize();
 	void setMap();
-	void moveMotor(motor _motorId);
+	void moveMotor(int _motorId);
 	int getTorque();
 };
 

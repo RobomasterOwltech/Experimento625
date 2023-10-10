@@ -5,8 +5,8 @@
  *      Author: sofia
  */
 
-#ifndef INC_MOTOR_H_
-#define INC_MOTOR_H_
+#ifndef INC_MOTOR_HPP_
+#define INC_MOTOR_HPP_
 
 #include "stm32h7xx_hal.h"
 
@@ -39,4 +39,4 @@ class Motor {
 };
 } /* namespace LL_Control */
 
-#endif /* INC_MOTOR_H_ */
+#endif /* INC_MOTOR_HPP_ */
