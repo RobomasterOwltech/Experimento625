@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "UltraSonic.hpp"
+#include "UltrasonicTask.hpp"
 
 /* USER CODE END Includes */
 
@@ -119,7 +119,7 @@ void StartJoystickReadingTask(void *argument);
 void StartSimpleKinSysTask(void *argument);
 
 /* USER CODE BEGIN PFP */
-void StartUltrasonicTask(void *dataReceived);
+void StartUltrasonicTask(void *argument);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -224,7 +224,7 @@ Error_Handler();
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  Ultrasonic = osThreadNew(StartUltrasonic, dataReceived, &Ultrasonic_attributes);
+  UltrasonicHandle = osThreadNew(StartUltrasonicTask, NULL, &Ultrasonic_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -239,7 +239,7 @@ Error_Handler();
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */}
+    /* USER CODE END WHILE */
 	  //UltraSonic s1(5,0,0,B,1,B,2);
     /* USER CODE BEGIN 3 */
   }
@@ -476,7 +476,7 @@ static void MX_TIM2_Init(void)
   /* USER CODE BEGIN TIM2_Init 2 */
 
   /* USER CODE END TIM2_Init 2 */
-  HAL_TIM_MspPostInit(&htim2);
+  HAL_TIM_Base_MspInit(&htim2);
 
 }
 
