@@ -1,0 +1,15 @@
+../Core/Src/MotorPI.cpp:27:1:LL_Control::Motor_PI::Motor_PI(LL_Control::Encoder*, TIM_HandleTypeDef*, int, int)	24	static
+../Core/Src/MotorPI.cpp:46:1:LL_Control::Motor_PI::~Motor_PI()	16	static
+../Core/Src/MotorPI.cpp:46:1:virtual LL_Control::Motor_PI::~Motor_PI()	16	static
+../Core/Src/MotorPI.cpp:52:6:void LL_Control::Motor_PI::set_MaxVel(float)	16	static
+../Core/Src/MotorPI.cpp:55:6:void LL_Control::Motor_PI::set_MinVel(float)	16	static
+../Core/Src/MotorPI.cpp:58:6:void LL_Control::Motor_PI::set_reference(float)	16	static
+../Core/Src/MotorPI.cpp:68:6:void LL_Control::Motor_PI::set_Ks(float, float)	24	static
+../Core/Src/MotorPI.cpp:72:6:void LL_Control::Motor_PI::set_runFrequency(int)	16	static
+../Core/Src/MotorPI.cpp:75:6:void LL_Control::Motor_PI::set_threshold(float)	16	static
+../Core/Src/MotorPI.cpp:80:7:float LL_Control::Motor_PI::get_vel()	24	static
+../Core/Src/MotorPI.cpp:98:6:void LL_Control::Motor_PI::invert()	16	static
+../Core/Src/MotorPI.cpp:101:7:float LL_Control::Motor_PI::map(float, float, float, float, float)	32	static
+../Core/Src/MotorPI.cpp:104:5:int LL_Control::Motor_PI::map(float)	16	static
+../Core/Src/MotorPI.cpp:113:6:void LL_Control::Motor_PI::go_to_ref()	24	static
+../Core/Src/MotorPI.cpp:147:6:void LL_Control::Motor_PI::stop()	16	static

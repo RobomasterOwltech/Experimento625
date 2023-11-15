@@ -1,3 +1,0 @@
-../Core/Src/MotorControl.cpp:12:1:LL_Control::MotorControl::MotorControl()	1
-../Core/Src/MotorControl.cpp:17:1:LL_Control::MotorControl::~MotorControl()	1
-../Core/Src/MotorControl.cpp:17:1:virtual LL_Control::MotorControl::~MotorControl()	1
