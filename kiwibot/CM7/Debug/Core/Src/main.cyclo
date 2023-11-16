@@ -17,8 +17,8 @@ C:\ST\STM32CubeIDE_1.13.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.external
 ../Core/Src/main.cpp:998:13:void MX_GPIO_Init()	1
 ../Core/Src/main.cpp:1077:6:void StartDefaultTask(void*)	1
 ../Core/Src/main.cpp:1095:6:void StartJoystick(void*)	4
-../Core/Src/main.cpp:1139:6:void StartChassis(void*)	1
-../Core/Src/main.cpp:1185:6:void StartDoor(void*)	1
-../Core/Src/main.cpp:1210:6:void StartUserValidation(void*)	8
-../Core/Src/main.cpp:1271:6:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef*)	2
-../Core/Src/main.cpp:1288:6:void Error_Handler()	1
+../Core/Src/main.cpp:1140:6:void StartChassis(void*)	1
+../Core/Src/main.cpp:1186:6:void StartDoor(void*)	1
+../Core/Src/main.cpp:1211:6:void StartUserValidation(void*)	8
+../Core/Src/main.cpp:1272:6:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef*)	2
+../Core/Src/main.cpp:1289:6:void Error_Handler()	1

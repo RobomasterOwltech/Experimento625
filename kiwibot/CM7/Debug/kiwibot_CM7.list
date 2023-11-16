@@ -39,13 +39,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_macro  000450dc  00000000  00000000  0007b8f9  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   00034c82  00000000  00000000  000c09d5  2**0
+ 18 .debug_line   00034c83  00000000  00000000  000c09d5  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    001b2ed9  00000000  00000000  000f5657  2**0
+ 19 .debug_str    001b2ed9  00000000  00000000  000f5658  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  0000bbf8  00000000  00000000  002a8530  2**2
+ 20 .debug_frame  0000bbf8  00000000  00000000  002a8534  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 00000063  00000000  00000000  002b4128  2**0
+ 21 .debug_line_str 00000063  00000000  00000000  002b412c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -5686,57 +5686,59 @@ void StartJoystick(void *argument)
  8002aa2:	2200      	movs	r2, #0
  8002aa4:	f00d faa2 	bl	800ffec <osMessageQueuePut>
 
-    osDelay(250U);
- 8002aa8:	20fa      	movs	r0, #250	; 0xfa
- 8002aaa:	f00d f8f1 	bl	800fc90 <osDelay>
-    if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_8)){
- 8002aae:	f44f 7180 	mov.w	r1, #256	; 0x100
- 8002ab2:	4819      	ldr	r0, [pc, #100]	; (8002b18 <_Z13StartJoystickPv+0xec>)
- 8002ab4:	f004 fffa 	bl	8007aac <HAL_GPIO_ReadPin>
- 8002ab8:	4603      	mov	r3, r0
- 8002aba:	2b00      	cmp	r3, #0
- 8002abc:	bf14      	ite	ne
- 8002abe:	2301      	movne	r3, #1
- 8002ac0:	2300      	moveq	r3, #0
- 8002ac2:	b2db      	uxtb	r3, r3
- 8002ac4:	2b00      	cmp	r3, #0
- 8002ac6:	d00a      	beq.n	8002ade <_Z13StartJoystickPv+0xb2>
+
+    if (!(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_8))){
+ 8002aa8:	f44f 7180 	mov.w	r1, #256	; 0x100
+ 8002aac:	481a      	ldr	r0, [pc, #104]	; (8002b18 <_Z13StartJoystickPv+0xec>)
+ 8002aae:	f004 fffd 	bl	8007aac <HAL_GPIO_ReadPin>
+ 8002ab2:	4603      	mov	r3, r0
+ 8002ab4:	2b00      	cmp	r3, #0
+ 8002ab6:	bf0c      	ite	eq
+ 8002ab8:	2301      	moveq	r3, #1
+ 8002aba:	2300      	movne	r3, #0
+ 8002abc:	b2db      	uxtb	r3, r3
+ 8002abe:	2b00      	cmp	r3, #0
+ 8002ac0:	d00a      	beq.n	8002ad8 <_Z13StartJoystickPv+0xac>
       if(pressed){
- 8002ac8:	f897 3077 	ldrb.w	r3, [r7, #119]	; 0x77
- 8002acc:	2b00      	cmp	r3, #0
- 8002ace:	d003      	beq.n	8002ad8 <_Z13StartJoystickPv+0xac>
+ 8002ac2:	f897 3077 	ldrb.w	r3, [r7, #119]	; 0x77
+ 8002ac6:	2b00      	cmp	r3, #0
+ 8002ac8:	d003      	beq.n	8002ad2 <_Z13StartJoystickPv+0xa6>
     	  pressed = false;
- 8002ad0:	2300      	movs	r3, #0
- 8002ad2:	f887 3077 	strb.w	r3, [r7, #119]	; 0x77
- 8002ad6:	e002      	b.n	8002ade <_Z13StartJoystickPv+0xb2>
+ 8002aca:	2300      	movs	r3, #0
+ 8002acc:	f887 3077 	strb.w	r3, [r7, #119]	; 0x77
+ 8002ad0:	e002      	b.n	8002ad8 <_Z13StartJoystickPv+0xac>
       } else
     	  pressed = true;
- 8002ad8:	2301      	movs	r3, #1
- 8002ada:	f887 3077 	strb.w	r3, [r7, #119]	; 0x77
+ 8002ad2:	2301      	movs	r3, #1
+ 8002ad4:	f887 3077 	strb.w	r3, [r7, #119]	; 0x77
 
     }
     if(pressed){
- 8002ade:	f897 3077 	ldrb.w	r3, [r7, #119]	; 0x77
- 8002ae2:	2b00      	cmp	r3, #0
- 8002ae4:	d00a      	beq.n	8002afc <_Z13StartJoystickPv+0xd0>
+ 8002ad8:	f897 3077 	ldrb.w	r3, [r7, #119]	; 0x77
+ 8002adc:	2b00      	cmp	r3, #0
+ 8002ade:	d00a      	beq.n	8002af6 <_Z13StartJoystickPv+0xca>
     	HAL_GPIO_WritePin (GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
- 8002ae6:	2201      	movs	r2, #1
- 8002ae8:	2101      	movs	r1, #1
- 8002aea:	480c      	ldr	r0, [pc, #48]	; (8002b1c <_Z13StartJoystickPv+0xf0>)
- 8002aec:	f004 fff6 	bl	8007adc <HAL_GPIO_WritePin>
+ 8002ae0:	2201      	movs	r2, #1
+ 8002ae2:	2101      	movs	r1, #1
+ 8002ae4:	480d      	ldr	r0, [pc, #52]	; (8002b1c <_Z13StartJoystickPv+0xf0>)
+ 8002ae6:	f004 fff9 	bl	8007adc <HAL_GPIO_WritePin>
 
     	osSemaphoreRelease(DestinationHandle);
- 8002af0:	4b07      	ldr	r3, [pc, #28]	; (8002b10 <_Z13StartJoystickPv+0xe4>)
- 8002af2:	681b      	ldr	r3, [r3, #0]
- 8002af4:	4618      	mov	r0, r3
- 8002af6:	f00d f9c1 	bl	800fe7c <osSemaphoreRelease>
- 8002afa:	e7ae      	b.n	8002a5a <_Z13StartJoystickPv+0x2e>
+ 8002aea:	4b09      	ldr	r3, [pc, #36]	; (8002b10 <_Z13StartJoystickPv+0xe4>)
+ 8002aec:	681b      	ldr	r3, [r3, #0]
+ 8002aee:	4618      	mov	r0, r3
+ 8002af0:	f00d f9c4 	bl	800fe7c <osSemaphoreRelease>
+ 8002af4:	e004      	b.n	8002b00 <_Z13StartJoystickPv+0xd4>
     } else {
     	HAL_GPIO_WritePin (GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
- 8002afc:	2200      	movs	r2, #0
- 8002afe:	2101      	movs	r1, #1
- 8002b00:	4806      	ldr	r0, [pc, #24]	; (8002b1c <_Z13StartJoystickPv+0xf0>)
- 8002b02:	f004 ffeb 	bl	8007adc <HAL_GPIO_WritePin>
+ 8002af6:	2200      	movs	r2, #0
+ 8002af8:	2101      	movs	r1, #1
+ 8002afa:	4808      	ldr	r0, [pc, #32]	; (8002b1c <_Z13StartJoystickPv+0xf0>)
+ 8002afc:	f004 ffee 	bl	8007adc <HAL_GPIO_WritePin>
+    }
+    osDelay(250U);
+ 8002b00:	20fa      	movs	r0, #250	; 0xfa
+ 8002b02:	f00d f8c5 	bl	800fc90 <osDelay>
     j1.read();
  8002b06:	e7a8      	b.n	8002a5a <_Z13StartJoystickPv+0x2e>
  8002b08:	2400025c 	.word	0x2400025c

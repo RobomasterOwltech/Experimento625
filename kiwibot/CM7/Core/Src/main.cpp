@@ -1110,8 +1110,8 @@ void StartJoystick(void *argument)
     data_joystick = {j1.get_xPos(), j1.get_yPos()};
     osMessageQueuePut(JoystickQueueHandle,&data_joystick,0,200);
 
-    osDelay(250U);
-    if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_8)){
+
+    if (!(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_8))){
       if(pressed){
     	  pressed = false;
       } else
@@ -1125,6 +1125,7 @@ void StartJoystick(void *argument)
     } else {
     	HAL_GPIO_WritePin (GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
     }
+    osDelay(250U);
   }
   /* USER CODE END StartJoystick */
 }
