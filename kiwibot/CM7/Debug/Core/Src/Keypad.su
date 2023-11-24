@@ -8,4 +8,4 @@ C:\ST\STM32CubeIDE_1.13.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.external
 ../Core/Src/Keypad.cpp:65:6:void Keypad::lcd_init()	16	static
 ../Core/Src/Keypad.cpp:90:6:char Keypad::keypad_read()	16	static
 ../Core/Src/Keypad.cpp:215:6:bool Keypad::is_valid(char)	16	static
-../Core/Src/Keypad.cpp:234:6:bool Keypad::check_password(char*)	24	static
+../Core/Src/Keypad.cpp:249:6:bool Keypad::check_password(char*)	24	static

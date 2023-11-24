@@ -21,7 +21,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "Encoder.hpp"
+#include "MotorPI.hpp"
+#include "Joystick.hpp"
+#include "Keypad.hpp"
+#include "stdio.h"
+#include "stdint.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,7 +51,14 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+char msg[50];
+struct Data
+{
+  float x_data;
+  float y_data;
+};
+uint16_t x_adc;
+uint16_t y_adc;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -71,19 +83,13 @@ int main(void)
   /* USER CODE END 1 */
 
 /* USER CODE BEGIN Boot_Mode_Sequence_1 */
-  /*HW semaphore Clock enable*/
-  __HAL_RCC_HSEM_CLK_ENABLE();
-  /* Activate HSEM notification for Cortex-M4*/
-  HAL_HSEM_ActivateNotification(__HAL_HSEM_SEMID_TO_MASK(HSEM_ID_0));
-  /*
-  Domain D2 goes to STOP mode (Cortex-M4 in deep-sleep) waiting for Cortex-M7 to
-  perform system initialization (system clock config, external memory configuration.. )
-  */
-  HAL_PWREx_ClearPendingEvent();
-  HAL_PWREx_EnterSTOPMode(PWR_MAINREGULATOR_ON, PWR_STOPENTRY_WFE, PWR_D2_DOMAIN);
-  /* Clear HSEM flag */
-  __HAL_HSEM_CLEAR_FLAG(__HAL_HSEM_SEMID_TO_MASK(HSEM_ID_0));
-
+  /* Wait until CPU2 boots and enters in stop mode or timeout*/
+  timeout = 0xFFFF;
+  while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) != RESET) && (timeout-- > 0));
+  if ( timeout < 0 )
+  {
+  Error_Handler();
+  }
 /* USER CODE END Boot_Mode_Sequence_1 */
   /* MCU Configuration--------------------------------------------------------*/
 

@@ -26,10 +26,8 @@
 #include "MotorPI.hpp"
 #include "Joystick.hpp"
 #include "Keypad.hpp"
-
 #include "stdio.h"
 #include "stdint.h"
-#include <string>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -82,7 +80,7 @@ osThreadId_t JoystickHandle;
 const osThreadAttr_t Joystick_attributes = {
   .name = "Joystick",
   .stack_size = 256 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* Definitions for Chassis */
 osThreadId_t ChassisHandle;
@@ -91,6 +89,13 @@ const osThreadAttr_t Chassis_attributes = {
   .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for UserInteraction */
+osThreadId_t UserInteractionHandle;
+const osThreadAttr_t UserInteraction_attributes = {
+  .name = "UserInteraction",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
 /* Definitions for Door */
 osThreadId_t DoorHandle;
 const osThreadAttr_t Door_attributes = {
@@ -98,27 +103,20 @@ const osThreadAttr_t Door_attributes = {
   .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
-/* Definitions for UserValidation */
-osThreadId_t UserValidationHandle;
-const osThreadAttr_t UserValidation_attributes = {
-  .name = "UserValidation",
-  .stack_size = 256 * 4,
-  .priority = (osPriority_t) osPriorityBelowNormal,
-};
 /* Definitions for JoystickQueue */
 osMessageQueueId_t JoystickQueueHandle;
 const osMessageQueueAttr_t JoystickQueue_attributes = {
   .name = "JoystickQueue"
 };
-/* Definitions for Pass */
-osSemaphoreId_t PassHandle;
-const osSemaphoreAttr_t Pass_attributes = {
-  .name = "Pass"
-};
 /* Definitions for Destination */
 osSemaphoreId_t DestinationHandle;
 const osSemaphoreAttr_t Destination_attributes = {
   .name = "Destination"
+};
+/* Definitions for Pass */
+osSemaphoreId_t PassHandle;
+const osSemaphoreAttr_t Pass_attributes = {
+  .name = "Pass"
 };
 /* USER CODE BEGIN PV */
 char msg[50];
@@ -127,6 +125,8 @@ struct Data
   float x_data;
   float y_data;
 };
+uint16_t x_adc;
+uint16_t y_adc;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -143,13 +143,13 @@ static void MX_TIM3_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_ADC2_Init(void);
-static void MX_TIM5_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_TIM5_Init(void);
 void StartDefaultTask(void *argument);
 void StartJoystick(void *argument);
 void StartChassis(void *argument);
+void StartUserInteraction(void *argument);
 void StartDoor(void *argument);
-void StartUserValidation(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -230,8 +230,8 @@ Error_Handler();
   MX_TIM1_Init();
   MX_ADC1_Init();
   MX_ADC2_Init();
-  MX_TIM5_Init();
   MX_I2C1_Init();
+  MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -244,11 +244,11 @@ Error_Handler();
   /* USER CODE END RTOS_MUTEX */
 
   /* Create the semaphores(s) */
-  /* creation of Pass */
-  PassHandle = osSemaphoreNew(1, 1, &Pass_attributes);
-
   /* creation of Destination */
   DestinationHandle = osSemaphoreNew(1, 1, &Destination_attributes);
+
+  /* creation of Pass */
+  PassHandle = osSemaphoreNew(1, 1, &Pass_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -276,11 +276,11 @@ Error_Handler();
   /* creation of Chassis */
   ChassisHandle = osThreadNew(StartChassis, NULL, &Chassis_attributes);
 
+  /* creation of UserInteraction */
+  UserInteractionHandle = osThreadNew(StartUserInteraction, NULL, &UserInteraction_attributes);
+
   /* creation of Door */
   DoorHandle = osThreadNew(StartDoor, NULL, &Door_attributes);
-
-  /* creation of UserValidation */
-  UserValidationHandle = osThreadNew(StartUserValidation, NULL, &UserValidation_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -825,7 +825,7 @@ static void MX_TIM5_Init(void)
   sConfigOC.Pulse = 0;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  if (HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
   {
     Error_Handler();
   }
@@ -1016,9 +1016,6 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOE, R1_Pin|R2_Pin|R3_Pin|R4_Pin
                           |LD2_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(USB_OTG_FS_PWR_EN_GPIO_Port, USB_OTG_FS_PWR_EN_Pin, GPIO_PIN_RESET);
-
   /*Configure GPIO pins : LD1_Pin LD3_Pin */
   GPIO_InitStruct.Pin = LD1_Pin|LD3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -1038,13 +1035,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : USB_OTG_FS_PWR_EN_Pin */
-  GPIO_InitStruct.Pin = USB_OTG_FS_PWR_EN_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(USB_OTG_FS_PWR_EN_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PC8 */
   GPIO_InitStruct.Pin = GPIO_PIN_8;
@@ -1098,34 +1088,35 @@ void StartJoystick(void *argument)
   Joystick j1(&hadc1, &hadc2);
   Data data_joystick;
 
-  bool pressed = false;
-
-  osSemaphoreAcquire(DestinationHandle, osWaitForever);
+  /*bool pressed = false;
+  osSemaphoreAcquire(DestinationHandle, osWaitForever);*/
   /* Infinite loop */
   for(;;)
   {
     j1.read();
     j1.set_pos();
     osDelay(10U);
+
+    x_adc = j1.get_xADC();
+    y_adc = j1.get_yADC();
+
     data_joystick = {j1.get_xPos(), j1.get_yPos()};
     osMessageQueuePut(JoystickQueueHandle,&data_joystick,0,200);
 
+    /*if ((HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_8))){
+          if(pressed){
+        	  pressed = false;
+          } else
+        	  pressed = true;
 
-    if (!(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_8))){
-      if(pressed){
-    	  pressed = false;
-      } else
-    	  pressed = true;
-
-    }
+        }
     if(pressed){
-    	HAL_GPIO_WritePin (GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
-
-    	osSemaphoreRelease(DestinationHandle);
+       	HAL_GPIO_WritePin (GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
+       	osSemaphoreRelease(DestinationHandle);
     } else {
-    	HAL_GPIO_WritePin (GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
+       	HAL_GPIO_WritePin (GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
     }
-    osDelay(250U);
+        osDelay(250U);*/
   }
   /* USER CODE END StartJoystick */
 }
@@ -1148,32 +1139,95 @@ void StartChassis(void *argument)
   HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
 
   LL_Control::Encoder encL(&htim4, 50);
-  LL_Control::Motor_PI  motorL(&encL, &htim3, 1050, 1950);
+  LL_Control::Motor_PI  motorL(&encL, &htim2, 1050, 1950);
   motorL.set_Ks(10.0f,5);
   motorL.stop();
 
   LL_Control::Encoder encR(&htim8, 50);
-  LL_Control::Motor_PI  motorR(&encR, &htim2, 1050, 1950);
+  LL_Control::Motor_PI  motorR(&encR, &htim3, 1050, 1950);
   motorR.set_Ks(10.0f,5);
   motorR.stop();
+
   /* Infinite loop */
   for(;;)
   {
-    osMessageQueueGet(JoystickQueueHandle, &reference, NULL, osWaitForever);
+  osMessageQueueGet(JoystickQueueHandle, &reference, NULL, osWaitForever);
 
-    motorL.set_reference((reference.x_data * 2) - (reference.y_data*2));
+  //motorL.set_reference(1);
+  motorL.set_reference((reference.x_data*2)+(reference.y_data*2));
     encL.update();
     motorL.go_to_ref();
 
-    motorR.set_reference((reference.x_data * 2) + (reference.y_data*2));
+    //motorR.set_reference(-1);
+    motorR.set_reference(-(reference.x_data*2)+(reference.y_data*2));
     encR.update();
     motorR.go_to_ref();
+
+    //pwm_vel1=motorL.get_vel();
+    //pwm_vel2=motorR.get_vel();
 
     snprintf(msg, 50, "CH_1: %.2f, CH_2: %.2f \r\n", reference.x_data, reference.y_data);
     HAL_UART_Transmit(&huart3,(uint8_t*) msg,sizeof(msg),10);
     osDelay(20U);
   }
   /* USER CODE END StartChassis */
+}
+
+/* USER CODE BEGIN Header_StartUserInteraction */
+/**
+* @brief Function implementing the UserInteraction thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartUserInteraction */
+void StartUserInteraction(void *argument)
+{
+  /* USER CODE BEGIN StartUserValidation */
+    char key;
+    char key1;
+    int count = 0;
+    char password[4];
+
+    Keypad k1(&hi2c1);
+    k1.lcd_init();
+
+    osSemaphoreAcquire(PassHandle, osWaitForever);
+    /* Infinite loop */
+    for(;;)
+    {
+      //osSemaphoreAcquire(DestinationHandle, osWaitForever);
+
+      key  = k1.keypad_read();
+      osDelay(250);
+      key1 = k1.keypad_read();
+
+      if((key != key1) && (k1.is_valid(key1) == true)){
+        k1.lcd_put_cur(1, count);
+        k1.lcd_send_data(key1);
+        password[count] = key1;
+        count++;
+      }
+
+      if((key == '*' || key1 == '*') && (count == 4) ){
+        if(k1.check_password(password)){
+          k1.lcd_put_cur(1, 0);
+          k1.lcd_send_string ("Correct  ");
+          count = 0;
+          osSemaphoreRelease(PassHandle);
+          osDelay(3000);
+        } else {
+          k1.lcd_put_cur(1, 0);
+          k1.lcd_send_string ("Incorrect ");
+          count = 0;
+          osDelay(3000);
+        };
+        k1.lcd_clear();
+      }
+
+      k1.lcd_put_cur(0, 0);
+      k1.lcd_send_string ("Insert pass:    ");
+    }
+    /* USER CODE END StartUserValidation */
 }
 
 /* USER CODE BEGIN Header_StartDoor */
@@ -1186,79 +1240,19 @@ void StartChassis(void *argument)
 void StartDoor(void *argument)
 {
   /* USER CODE BEGIN StartDoor */
-  HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
   /* Infinite loop */
   for(;;)
   {
     osSemaphoreAcquire(PassHandle, osWaitForever);
 
     osDelay(1);
-    TIM5->CCR1 = 1500;
+    TIM5->CCR4 = 1500;
     HAL_Delay(5000);
-    TIM5->CCR1 = 750;
+    TIM5->CCR4 = 750;
     HAL_Delay(5000);
   }
   /* USER CODE END StartDoor */
-}
-
-/* USER CODE BEGIN Header_StartUserValidation */
-/**
-* @brief Function implementing the UserValidation thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartUserValidation */
-void StartUserValidation(void *argument)
-{
-  /* USER CODE BEGIN StartUserValidation */
-  char key;
-  char key1;
-  int count = 0;
-  char password[4];
-
-  Keypad k1(&hi2c1);
-  k1.lcd_init();
-
-  osSemaphoreAcquire(PassHandle, osWaitForever);
-  /* Infinite loop */
-  for(;;)
-  {
-
-	//k1.lcd_clear();
-	osSemaphoreAcquire(DestinationHandle, osWaitForever);
-
-	key  = k1.keypad_read();
-    osDelay(250);
-    key1 = k1.keypad_read();
-
-
-    if((key != key1) && (k1.is_valid(key1) == true)){
-      k1.lcd_put_cur(1, count);
-      k1.lcd_send_data(key1);
-      password[count] = key1;
-      count++;
-    }
-
-    if((key == '*' || key1 == '*') && (count == 4) ){
-      if(k1.check_password(password)){
-        k1.lcd_put_cur(1, 0);
-        k1.lcd_send_string ("Correct  ");
-        count = 0;
-        osSemaphoreRelease(PassHandle);
-        osDelay(3000);
-      } else {
-        k1.lcd_put_cur(1, 0);
-        k1.lcd_send_string ("Incorrect ");
-        count = 0;
-        osDelay(3000);
-      };
-      k1.lcd_clear();
-    }
-
-    k1.lcd_put_cur(0, 0);
-    k1.lcd_send_string ("Insert pass:    ");
-  }
-  /* USER CODE END StartUserValidation */
 }
 
 /**

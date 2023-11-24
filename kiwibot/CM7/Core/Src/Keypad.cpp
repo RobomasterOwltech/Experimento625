@@ -230,6 +230,21 @@ bool Keypad::is_valid(char _key)
   if(_key == '4'){
   	  return true;
   }
+  if(_key == '5'){
+  	  return true;
+  }
+  if(_key == '6'){
+	  return true;
+  }
+  if(_key == '7'){
+	  return true;
+  }
+  if(_key == '8'){
+	  return true;
+  }
+  if(_key == '9'){
+	  return true;
+  }
 }
 bool Keypad::check_password(char *_input)
 {

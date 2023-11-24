@@ -30,10 +30,12 @@ private:
 public:
 	Joystick(ADC_HandleTypeDef * _hadc1, ADC_HandleTypeDef * _hadc2);
 	void read();
-	float map(float x);
+	float map(float x, int in_min, int in_max);
 	void set_pos();
 	float get_xPos();
 	float get_yPos();
+	uint16_t get_xADC();
+	uint16_t get_yADC();
 };
 
 #endif /* JOYSTICK_HPP_ */
