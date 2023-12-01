@@ -1,0 +1,8 @@
+../Core/Src/Joystick.cpp:10:1:Joystick::Joystick(ADC_HandleTypeDef*, ADC_HandleTypeDef*)	1
+../Core/Src/Joystick.cpp:16:6:void Joystick::read()	1
+../Core/Src/Joystick.cpp:26:7:float Joystick::map(float, int, int)	1
+../Core/Src/Joystick.cpp:29:6:void Joystick::set_pos()	9
+../Core/Src/Joystick.cpp:54:7:float Joystick::get_xPos()	1
+../Core/Src/Joystick.cpp:57:7:float Joystick::get_yPos()	1
+../Core/Src/Joystick.cpp:60:10:uint16_t Joystick::get_xADC()	1
+../Core/Src/Joystick.cpp:64:10:uint16_t Joystick::get_yADC()	1

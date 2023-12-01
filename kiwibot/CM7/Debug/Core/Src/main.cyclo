@@ -16,7 +16,7 @@ C:\ST\STM32CubeIDE_1.13.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.external
 ../Core/Src/main.cpp:977:13:void MX_DMA_Init()	1
 ../Core/Src/main.cpp:998:13:void MX_GPIO_Init()	1
 ../Core/Src/main.cpp:1067:6:void StartDefaultTask(void*)	1
-../Core/Src/main.cpp:1085:6:void StartJoystick(void*)	1
+../Core/Src/main.cpp:1085:6:void StartJoystick(void*)	4
 ../Core/Src/main.cpp:1131:6:void StartChassis(void*)	1
 ../Core/Src/main.cpp:1183:6:void StartUserInteraction(void*)	8
 ../Core/Src/main.cpp:1240:6:void StartDoor(void*)	1

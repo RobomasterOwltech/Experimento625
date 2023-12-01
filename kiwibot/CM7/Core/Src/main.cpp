@@ -1088,8 +1088,8 @@ void StartJoystick(void *argument)
   Joystick j1(&hadc1, &hadc2);
   Data data_joystick;
 
-  /*bool pressed = false;
-  osSemaphoreAcquire(DestinationHandle, osWaitForever);*/
+  bool pressed = false;
+  osSemaphoreAcquire(DestinationHandle, osWaitForever);
   /* Infinite loop */
   for(;;)
   {
@@ -1103,7 +1103,7 @@ void StartJoystick(void *argument)
     data_joystick = {j1.get_xPos(), j1.get_yPos()};
     osMessageQueuePut(JoystickQueueHandle,&data_joystick,0,200);
 
-    /*if ((HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_8))){
+    if ((HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_8))){
           if(pressed){
         	  pressed = false;
           } else
@@ -1116,7 +1116,7 @@ void StartJoystick(void *argument)
     } else {
        	HAL_GPIO_WritePin (GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
     }
-        osDelay(250U);*/
+
   }
   /* USER CODE END StartJoystick */
 }
@@ -1195,7 +1195,7 @@ void StartUserInteraction(void *argument)
     /* Infinite loop */
     for(;;)
     {
-      //osSemaphoreAcquire(DestinationHandle, osWaitForever);
+      osSemaphoreAcquire(DestinationHandle, osWaitForever);
 
       key  = k1.keypad_read();
       osDelay(250);
